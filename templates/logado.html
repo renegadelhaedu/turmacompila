@@ -7,18 +7,17 @@
 </head>
 <body>
     <div>
-        <h1>Meu sistema web</h1>
+        <h3>Seja bem-vindo {{email}}</h3>
     </div>
     <div class="div-inferior">
-        <form action="/verificarlogin" method="post">
-            <label>Login</label><br>
-            <input type="email" name="emailusuario"><br><br>
 
-            <label>Senha</label><br>
-            <input type="password" name="senhausuario" ><br>
-            <button type="submit">Login</button>
-
-        </form>
+        <nav>
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Sobre</a></li>
+            <li><a href="/entraremcontato">Contato</a></li>
+          </ul>
+        </nav>
     </div>
 </body>
 </html>

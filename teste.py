@@ -1,1 +1,2 @@
-print(__name__)
+email = 'sasa@bababba.com'
+print(email.split('@')[0])

@@ -12,11 +12,21 @@ def home():
 def verificar_login():
     user = request.form.get('emailusuario')
     senha = request.form.get('senhausuario')
-    print(user + senha)
+    nome_user = user.split('@')[0]
+
     if dao.checarlogin(user, senha):
-        return render_template('logado.html')
+        return render_template('logado.html', email=nome_user)
     else:
         return render_template('errologin.html')
+
+
+@app.route('/entraremcontato')
+def mostrarpaginacontato():
+    return render_template('contato.html')
+
+@app.route('/inserircontato')
+def mostrarpaginacontato():
+    return render_template('contato.html')
 
 
 if __name__ == '__main__':
