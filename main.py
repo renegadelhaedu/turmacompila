@@ -3,6 +3,7 @@ import dao
 
 #isntancia o servidor flask
 app = Flask(__name__)
+app.secret_key = 'lkjlkJSkldja5324kdsdhsj-dsa12'
 
 @app.route('/')
 def home():
@@ -15,6 +16,8 @@ def verificar_login():
     nome_user = user.split('@')[0]
 
     if dao.checarlogin(user, senha):
+        session['email'] = user
+        session['nome'] = nome_user
         return render_template('logado.html', email=nome_user)
     else:
         return render_template('errologin.html')
@@ -22,7 +25,7 @@ def verificar_login():
 
 @app.route('/entraremcontato')
 def mostrarpaginacontato():
-    return render_template('contato.html')
+    return render_template('contato.html', nome=session['nome'], email=session['email'])
 
 @app.route('/inserircontato', methods=['POST'])
 def inserircontato():
@@ -31,7 +34,7 @@ def inserircontato():
     texto = request.form.get('texto')
 
     if dao.inserir_contato(nome, email, texto):
-        return render_template('index.html')
+        return render_template('logado.html')
     else:
         #criar pagina de erro de contato
         return render_template('index.html')
