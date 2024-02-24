@@ -24,9 +24,17 @@ def verificar_login():
 def mostrarpaginacontato():
     return render_template('contato.html')
 
-@app.route('/inserircontato')
-def mostrarpaginacontato():
-    return render_template('contato.html')
+@app.route('/inserircontato', methods=['POST'])
+def inserircontato():
+    nome = request.form.get('nome')
+    email = request.form.get('email')
+    texto = request.form.get('texto')
+
+    if dao.inserir_contato(nome, email, texto):
+        return render_template('index.html')
+    else:
+        #criar pagina de erro de contato
+        return render_template('index.html')
 
 
 if __name__ == '__main__':

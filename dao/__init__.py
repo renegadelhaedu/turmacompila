@@ -5,3 +5,7 @@ def checarlogin(usuario, senha):
         return True
     else:
         return False
+
+def inserir_contato(nome, email, comentario):
+    print('ok')
+    return True
