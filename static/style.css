@@ -1,0 +1,30 @@
+body {
+  background: linear-gradient(to bottom, #c0c0c0 0%, #4169e1 100%);
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+H1{
+    text-align: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.div-inferior {
+  margin-top: 100px;
+}
+
+form {
+  text-align: center;
+}
+
+.erro{
+    text-color: red;
+}
