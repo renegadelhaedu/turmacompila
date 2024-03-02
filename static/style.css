@@ -19,6 +19,11 @@ H1{
 
 .div-inferior {
   margin-top: 100px;
+  text-align:center;
+}
+.div-inscricao {
+  margin-top: 20px;
+  text-align:center;
 }
 
 form {
