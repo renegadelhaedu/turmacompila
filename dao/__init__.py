@@ -1,12 +1,61 @@
+import requests
+import psycopg2
+
+def conectarDB():
+    return conectar_localBD()
+
+def conectar_localBD():
+    con = psycopg2.connect(
+        host= 'localhost',
+        database= 'compila',
+        user= 'postgres',
+        password= '12345'
+    )
+    return con
+
+def verificarUsuarioExistente(email):
+    conexao = conectarDB()
+    cur = conexao.cursor()
+    cur.execute(f"select count(*) from usuarios where email = '{email}'")
+    recset = cur.fetchall()
+    conexao.close()
+    if recset[0][0] == 1:
+        return True
+    else:
+        return False
+
+def cadastrarusuario(nome, idade, email, senha):
+    if not verificarUsuarioExistente(email):
+        conexao = conectarDB()
+        cur = conexao.cursor()
+        try:
+            sql = f"INSERT INTO usuarios (nome, idade, email, senha) VALUES ('{nome}', '{idade}', '{email}', '{senha}' )"
+            cur.execute(sql)
+        except psycopg2.IntegrityError:
+            conexao.rollback()
+            exito = False
+        else:
+            conexao.commit()
+            exito = True
+
+        conexao.close()
+        return exito
+    else:
+        return False
+
+def checarlogin(email, senha):
+    conexao = conectarDB()
+    cur = conexao.cursor()
+    cur.execute(f"select count(*) from usuarios where email = '{email}' and senha ='{senha}'")
+    recset = cur.fetchall()
+    conexao.close()
+    if recset[0][0] == 1:
+        return True
+    else:
+        return False
 
 
-def checarlogin(users:list, usuario, senha):
-    for user in users:
-        if user['email'] == usuario and user['senha'] == senha:
-            return True
-    return False
-
-def cadastrarusuario(users:list, nome, idade, email, senha):
+def cadastrarusuario_antigo(users:list, nome, idade, email, senha):
     novousuario = {'nome':nome, 'idade':idade, 'email':email, 'senha': senha}
     if not usuarioexiste(users, email):
         users.append(novousuario)
@@ -21,6 +70,13 @@ def usuarioexiste(users:list, email):
     return False # nao existe ninguem com este login
 
 
-def registrar_contato(nome, email, comentario):
-    print('ok')
+def registrar_contato(nome, email, comentario, cep):
+    endereco = requests.get(f'https://api.brasilaberto.com/v1/zipcode/{cep}').json()
+    rua = endereco['result']['street']
+    cidade = endereco['result']['city']
+    estado = endereco['result']['state']
+
+    print(f'{rua}')
+    print(f'Cidade: {cidade}')
+    print(f'Cidade: {estado}')
     return True

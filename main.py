@@ -1,8 +1,6 @@
 from flask import *
 import dao
 
-usuarios = []
-
 #isntancia o servidor flask
 app = Flask(__name__)
 app.secret_key = '3j45h3j2k4h5kj3h45h23JHGJHgh'
@@ -23,7 +21,7 @@ def cadastrar_usuario():
     email = request.form.get('emailusuario')
     senha = request.form.get('senhausuario')
 
-    if dao.cadastrarusuario(usuarios, nome, idade, email, senha):
+    if dao.cadastrarusuario(nome, idade, email, senha):
         return render_template('home.html', msg='Usuário inserido com sucesso')
     else:
         return render_template('home.html', msg='Usuário já existe')
@@ -34,7 +32,7 @@ def verificar_login():
     user = request.form.get('emailusuario')
     senha = request.form.get('senhausuario')
 
-    if dao.checarlogin(usuarios, user, senha):
+    if dao.checarlogin(user, senha):
         session['idusuario'] = user
         return render_template('logado.html', email=user)
     else:
@@ -56,12 +54,15 @@ def inserircontato():
         nome = request.form.get('nome')  # POST
         email = request.form.get('email')
         texto = request.form.get('texto')
+        cep = request.form.get('cep')
     else:
-        nome = request.args.get('nome')  # POST
+        nome = request.args.get('nome')  # GET
         email = request.args.get('email')
         texto = request.args.get('texto')
+        cep = request.args.get('cep')
 
-    if dao.registrar_contato(nome, email, texto):
+    cep = cep.replace('-','')
+    if dao.registrar_contato(nome, email, texto, cep):
         return render_template('logado.html')
     else:
         #criar pagina de erro de contato
