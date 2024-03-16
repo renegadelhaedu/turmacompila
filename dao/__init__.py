@@ -13,6 +13,15 @@ def conectar_localBD():
     )
     return con
 
+def conectar_cloudBD():
+    con = psycopg2.connect(
+        host= '',
+        database= '',
+        user= '',
+        password= ''
+    )
+    return con
+
 def verificarUsuarioExistente(email):
     conexao = conectarDB()
     cur = conexao.cursor()
@@ -70,13 +79,32 @@ def usuarioexiste(users:list, email):
     return False # nao existe ninguem com este login
 
 
-def registrar_contato(nome, email, comentario, cep):
+def registrar_contato(nome, email, comentario, cep, email_login):
     endereco = requests.get(f'https://api.brasilaberto.com/v1/zipcode/{cep}').json()
-    rua = endereco['result']['street']
-    cidade = endereco['result']['city']
-    estado = endereco['result']['state']
 
-    print(f'{rua}')
-    print(f'Cidade: {cidade}')
-    print(f'Cidade: {estado}')
-    return True
+    if 'error' not in endereco['result']:
+        if endereco['result']['street'] == '':
+            rua = 'nao encontrado'
+        else:
+            rua = endereco['result']['street']
+        cidade = endereco['result']['city']
+        estado = endereco['result']['state']
+    else:
+        #cep invalido
+        return False
+
+    conexao = conectarDB()
+    cur = conexao.cursor()
+    try:
+        sql = (f"INSERT INTO contatos (nome, email_contato, mensagem, rua, cidade, estado, email_login)"
+               f" VALUES ('{nome}', '{email}', '{comentario}', '{rua}', '{cidade}', '{estado}', '{email_login}' )")
+        cur.execute(sql)
+    except psycopg2.IntegrityError:
+        conexao.rollback()
+        exito = False
+    else:
+        conexao.commit()
+        exito = True
+
+    conexao.close()
+    return exito

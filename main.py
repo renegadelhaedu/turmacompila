@@ -49,7 +49,6 @@ def mostrarpaginacontato():
 @app.route('/inserircontato', methods=['POST','GET'])
 def inserircontato():
 
-
     if request.method == 'POST':
         nome = request.form.get('nome')  # POST
         email = request.form.get('email')
@@ -62,11 +61,11 @@ def inserircontato():
         cep = request.args.get('cep')
 
     cep = cep.replace('-','')
-    if dao.registrar_contato(nome, email, texto, cep):
+    if dao.registrar_contato(nome, email, texto, cep, session['idusuario']):
         return render_template('logado.html')
     else:
         #criar pagina de erro de contato
-        return render_template('index.html')
+        return render_template('contato.html', msg='cep invalido')
 
 
 if __name__ == '__main__':

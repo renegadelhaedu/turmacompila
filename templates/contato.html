@@ -10,7 +10,9 @@
         <h1>Contato com o {{nome}}</h1>
         <h3>Este formulário será enviado para o e-mail {{email}}</h3>
     </div>
+
     <div class="div-inferior">
+
         <form action="/inserircontato" method="post">
             <label>Nome</label><br>
             <input type="text" name="nome"><br><br>
@@ -27,6 +29,8 @@
             <button type="submit">Enviar</button>
 
         </form>
+        <br>
+        <a style="color:red">{{ msg}}</a>
     </div>
 </body>
 </html>
