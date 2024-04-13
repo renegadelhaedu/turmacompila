@@ -8,13 +8,13 @@
 <body>
     <div>
         <h3>Seja bem-vindo {{email}}</h3>
-        <a href="/logout">Logout</a>
+        <a href="/">Logout</a>
     </div>
     <div class="div-inferior">
 
         <nav>
           <ul>
-            <li><a href="#">Home</a></li>
+            <li><a href="/verificarlogin">Home</a></li>
             <li><a href="#">Sobre</a></li>
             <li><a href="/entraremcontato">Contato</a></li>
               <li><a href="/listarmensagens">Listar Mensagens</a></li>
@@ -22,9 +22,16 @@
         </nav>
     </div>
     <div>
+        <ul>
+        {% for nome, msg in lista %}
+            {% if nome == 'cacaca' %}
+                <li>Nao gostamos desse usuário</li>
+            {% else %}
+                <li>{{ nome }}        |       {{ msg }}</li>
+            {% endif %}
 
-        <h2>Interesse em Cajazeiras - Google Trends</h2>
-        {{ fig|safe }}
+        {% endfor %}
+        </ul>
     </div>
 </body>
 </html>

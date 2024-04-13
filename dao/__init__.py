@@ -52,6 +52,14 @@ def cadastrarusuario(nome, idade, email, senha):
     else:
         return False
 
+def listar_msgs_user(email):
+    conexao = conectarDB()
+    cur = conexao.cursor()
+    cur.execute(f"select nome, mensagem from contatos where email_login = '{email}'")
+    recset = cur.fetchall()
+    conexao.close()
+    return recset
+
 def checarlogin(email, senha):
     conexao = conectarDB()
     cur = conexao.cursor()
